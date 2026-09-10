@@ -100,3 +100,20 @@ db.products.createIndex(
         name: "category_colour_index"
     }
 );
+## Repeated MongoDB Benchmark
+
+The indexed query was executed 200 times before indexing and 200 times after indexing to provide more reliable performance evidence.
+
+| Configuration | Runs | Total time | Average time |
+|---|---:|---:|---:|
+| Before index | 200 | 1,645 ms | 8.225 ms |
+| After index | 200 | 1,061 ms | 5.305 ms |
+
+The repeated test measured a 35.5% average execution-time improvement.
+
+This supports the execution-plan analysis, which showed that the compound index changed the query from `COLLSCAN` to `IXSCAN` and reduced documents examined from 5,010 to 251, approximately a 95% reduction.
+
+The benchmark evidence is available in:
+
+- `repeated-index-benchmark.js`
+- `repeated-index-benchmark-results.txt`

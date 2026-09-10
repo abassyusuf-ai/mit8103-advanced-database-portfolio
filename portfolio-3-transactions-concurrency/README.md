@@ -34,3 +34,12 @@ The function uses:
 SELECT ...
 ORDER BY branch_id
 FOR UPDATE;
+## Isolation Level and Deadlock Prevention
+
+PostgreSQL reported the transaction isolation level as `READ COMMITTED`. Under this isolation level, each statement reads committed data while row-level locks prevent concurrent transactions from modifying the same inventory records simultaneously.
+
+The `transfer_inventory` function locks the source and destination records using:
+
+```sql
+ORDER BY branch_id
+FOR UPDATE

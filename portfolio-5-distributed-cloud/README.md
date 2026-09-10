@@ -121,3 +121,20 @@ Get-Content .\portfolio-5-distributed-cloud\distributed-validation.sql -Raw | do
 ## Conclusion
 
 The implementation demonstrates horizontal data distribution, remote data access, restricted permissions and transparent cross-node querying. PostgreSQL FDW allows the coordinator to combine independently stored branch records while preserving their separate physical locations.
+## Node Failure and Recovery Test
+
+A controlled resilience test was performed to demonstrate the effect of remote-node failure.
+
+The remote branch node was stopped while the coordinator remained active. A query against the foreign table failed because the coordinator could not reach the remote PostgreSQL server. This confirmed that the system correctly detected remote-node unavailability.
+
+The branch node was then restarted and returned to a healthy state. The same foreign-table query subsequently succeeded and returned:
+
+- 5 recovered remote orders
+- Remote revenue of 2,670,500.00
+
+This test demonstrates failure detection, service recovery and the restoration of distributed query access.
+
+The supporting evidence is available in:
+
+- `failure-recovery-test.ps1`
+- `failure-recovery-results.txt`

@@ -45,3 +45,18 @@ The following composite B-tree index was created:
 ```sql
 CREATE INDEX idx_orders_branch_ordered_at
 ON orders (branch_id, ordered_at);
+## Repeated Benchmark Results
+
+To reduce the effect of one-off execution timing and database caching, the reporting query was executed 10 times before indexing and 10 times after indexing.
+
+| Configuration | Runs | Average | Minimum | Maximum |
+|---|---:|---:|---:|---:|
+| Before index | 10 | 9.932 ms | 5.720 ms | 37.410 ms |
+| After index | 10 | 1.849 ms | 1.474 ms | 3.292 ms |
+
+The repeated benchmark produced an average execution-time reduction of approximately 81.38%. This supports the original `EXPLAIN ANALYZE` result and demonstrates that the composite index provides a consistent improvement rather than relying on a single measurement.
+
+The benchmark implementation and captured output are available in:
+
+- `repeated-benchmark.sql`
+- `repeated-benchmark-results.txt`
