@@ -1,0 +1,50 @@
+services:
+  coordinator:
+    image: postgres:16-alpine
+    container_name: mit8103-coordinator
+    environment:
+      POSTGRES_DB: distributed_retail
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5433:5432"
+    volumes:
+      - coordinator_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER} -d distributed_retail
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - distributed_network
+
+  branch_node:
+    image: postgres:16-alpine
+    container_name: mit8103-branch-node
+    environment:
+      POSTGRES_DB: distributed_retail
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5434:5432"
+    volumes:
+      - branch_node_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - pg_isready -U ${POSTGRES_USER} -d distributed_retail
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - distributed_network
+
+networks:
+  distributed_network:
+    name: mit8103_distributed_network
+
+volumes:
+  coordinator_data:
+  branch_node_data:
