@@ -38,3 +38,12 @@ Create a local `.env` file using `.env.example`, then run:
 
 ```bash
 docker compose up -d
+
+Save it.
+
+### Make the first progressive commit
+
+Run:
+
+```powershell
+git config user.name "Yusuf Abbas"
